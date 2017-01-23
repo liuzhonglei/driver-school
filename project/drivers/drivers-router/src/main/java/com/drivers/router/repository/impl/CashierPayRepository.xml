@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.CashierPayRepository" >
+    <insert id="save">
+        INSERT INTO cashier_pay(out_trade_no,appid,brand_id,is_collect,shop_id,account_type,pay_channel,pay_platform,pay_type,pay_fee,actual_fee,coupon_fee,pay_status,transaction_no,pay_time,uuid,buyer_account,seller_account,notify_time,notify_status)
+        VALUE (#{outTradeNo},#{appid},#{brandId},#{isCollect},#{shopId},#{accountType},#{payChannel},#{payPlatform},#{payType},#{payFee},#{actualFee},#{couponFee},#{payStatus},#{transactionNo},#{payTime},#{uuid},#{buyerAccount},#{sellerAccount},#{notifyTime},#{notifyStatus})
+    </insert>
+</mapper>

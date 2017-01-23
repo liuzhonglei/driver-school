@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.PersistentLoginsRepository" >
+  <resultMap id="BaseResultMap" type="com.drivers.entity.PersistentLogins" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="series" property="series" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="last_used" property="lastUsed" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

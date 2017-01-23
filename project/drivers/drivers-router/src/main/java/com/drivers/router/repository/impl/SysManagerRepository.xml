@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.SysManagerRepository" >
+
+  <insert id="save">
+    INSERT INTO sys_manager(username,password,email,name,sex,birthday,mobile,data_creator,data_updater)
+    VALUE (#{username},#{password},#{email},#{name},#{sex},#{birthday},#{mobile},#{dataCreator},#{dataUpdater})
+  </insert>
+  <update id="batchInvalid">
+    UPDATE sys_manager
+    set data_status = 0,data_updater = #{dataUpdater}
+    where id in
+    <foreach item="item" index="index" collection="ids"
+             open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+  <update id="update" parameterType="java.util.Map">
+    UPDATE sys_manager
+      set username = #{username},
+          password = #{password},
+          email = #{email},
+          avatar_url = #{avatarUrl},
+          name = #{name},
+          sex = #{sex},
+          birthday = #{birthday},
+          mobile = #{mobile},
+          data_updater = #{dataUpdater}
+    where id = #{id}
+  </update>
+  <!-- 分页动态查询-->
+  <select id="countBySearch" resultType="Long">
+    SELECT count(id)
+    FROM sys_manager
+    WHERE 1 = 1
+    <if test = "username != null and username != ''">
+      <bind name="usernamePattern" value="'%' + _parameter.getUsername() + '%'" />
+      AND username like #{usernamePattern}
+    </if>
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND mobile like #{mobilePattern}
+    </if>
+    AND data_status = 1
+  </select>
+  <select id="findAllBySearch" resultType="com.drivers.entity.SysManager">
+    SELECT *
+    FROM sys_manager
+    WHERE 1 = 1
+    <if test = "username != null and username != ''">
+      <bind name="usernamePattern" value="'%' + _parameter.getUsername() + '%'" />
+      AND username like #{usernamePattern}
+    </if>
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND mobile like #{mobilePattern}
+    </if>
+    AND data_status = 1
+    <if test = "sort != null">
+      ORDER BY ${sort} ${order}
+    </if>
+    limit #{offset},#{limit}
+
+  </select>
+</mapper>

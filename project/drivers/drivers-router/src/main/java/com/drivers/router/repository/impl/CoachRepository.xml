@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.CoachRepository" >
+  <insert id="save">
+    INSERT INTO coach(name,mobile,mobile2,model,data_creator,data_updater)
+    VALUE (#{name},#{mobile},#{mobile2},#{model},#{dataCreator},#{dataUpdater})
+  </insert>
+
+  <update id="update" parameterType="java.util.Map">
+    UPDATE coach
+    set name = #{name},
+    mobile = #{mobile},
+    mobile2 = #{mobile2},
+    model = #{model},
+    name = #{name},
+    data_updater = #{dataUpdater}
+    where id = #{id}
+  </update>
+
+  <update id="batchInvalid">
+    UPDATE coach
+    set data_status = 0,data_updater = #{dataUpdater}
+    where id in
+    <foreach item="item" index="index" collection="ids"
+             open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+
+  <select id="getCoachDic" resultType="com.drivers.router.web.response.common.KeyValueResp">
+    select id,concat(name,'-',mobile) name
+    from coach
+    where 1=1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + name + '%'" />
+      AND name like #{namePattern}
+    </if>
+    AND data_status = 1
+  </select>
+
+  <!-- 分页动态查询-->
+  <select id="countBySearch" resultType="Long">
+    SELECT count(id)
+    FROM coach c
+    WHERE 1 = 1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND c.name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND c.mobile like #{mobilePattern}
+    </if>
+    AND c.data_status = 1
+  </select>
+  <select id="findAllBySearch" resultType="com.drivers.entity.Coach">
+    SELECT *
+    FROM coach c
+    WHERE 1 = 1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND c.name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND c.mobile like #{mobilePattern}
+    </if>
+    <if test = "model != null and model != ''">
+      AND c.model = #{model}
+    </if>
+    AND c.data_status = 1
+    <if test = "sort != null">
+      ORDER BY ${sort} ${order}
+    </if>
+    limit #{offset},#{limit}
+  </select>
+</mapper>

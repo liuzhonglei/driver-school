@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.WxFansRepository" >
+
+    <insert id="save">
+        INSERT INTO wx_fans(subscribe,open_id,nickname,sex,city,country,province,language,head_img_url,subscribe_time,unionid,remark,groupid,tagid_list)
+        VALUE (#{subscribe},#{openId},#{nickname},#{sex},#{city},#{country},#{province},#{language},#{headImgUrl},#{subscribeTime},#{unionid},#{remark},#{groupid},#{tagidList})
+    </insert>
+
+    <select id="getWxFansDic4Coach" resultType="com.drivers.router.web.response.common.KeyValueResp">
+        select open_id,concat(nickname,'-',sex,'-',city,'-',open_id) name
+        FROM wx_fans wf
+        where
+        NOT EXISTS (SELECT * FROM coach c WHERE c.wx_openid = wf.open_id AND c.data_status = 1)
+        <if test = "nickname != null and nickname != ''">
+            <bind name="namePattern" value="'%' + nickname + '%'" />
+            AND wf.nickname like #{namePattern}
+        </if>
+        AND wf.data_status = 1
+    </select>
+
+    <select id="getWxFansDic4Cadet" resultType="com.drivers.router.web.response.common.KeyValueResp">
+        select open_id,concat(nickname,'-',sex,'-',city,'-',open_id) name
+        FROM wx_fans wf
+        where
+        NOT EXISTS (SELECT * FROM cadet c WHERE c.wx_openid = wf.open_id AND c.data_status = 1)
+        <if test = "nickname != null and nickname != ''">
+            <bind name="namePattern" value="'%' + nickname + '%'" />
+            AND wf.nickname like #{namePattern}
+        </if>
+        AND wf.data_status = 1
+    </select>
+    <select id="getWxFansDic4SysManager" resultType="com.drivers.router.web.response.common.KeyValueResp">
+        select open_id,concat(nickname,'-',sex,'-',city,'-',open_id) name
+        FROM wx_fans wf
+        where
+        NOT EXISTS (SELECT * FROM sys_manager c WHERE c.wx_openid = wf.open_id AND c.data_status = 1)
+        <if test = "nickname != null and nickname != ''">
+            <bind name="namePattern" value="'%' + nickname + '%'" />
+            AND wf.nickname like #{namePattern}
+        </if>
+        AND wf.data_status = 1
+    </select>    <!-- 分页动态查询-->
+    <select id="countBySearch" resultType="Long">
+        SELECT count(id)
+        FROM wx_fans c
+        WHERE 1 = 1
+        <if test = "nickname != null and nickname != ''">
+            <bind name="nicknamePattern" value="'%' + _parameter.getNickname() + '%'" />
+            AND c.nickname like #{nicknamePattern}
+        </if>
+        <if test = "sex != null and sex != ''">
+            AND c.sex like #{sex}
+        </if>
+        <if test = "openId != null and openId != ''">
+            AND c.open_id like #{openId}
+        </if>
+        AND c.data_status = 1
+    </select>
+    <select id="findAllBySearch" resultType="com.drivers.router.web.response.WxFansResp">
+        SELECT *
+        FROM wx_fans c
+        WHERE 1 = 1
+        <if test = "nickname != null and nickname != ''">
+            <bind name="nicknamePattern" value="'%' + _parameter.getNickname() + '%'" />
+            AND c.nickname like #{nicknamePattern}
+        </if>
+        <if test = "sex != null and sex != ''">
+            AND c.sex like #{sex}
+        </if>
+        <if test = "openId != null and openId != ''">
+            AND c.open_id like #{openId}
+        </if>
+        AND c.data_status = 1
+        <if test = "sort != null">
+            ORDER BY ${sort} ${order}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+</mapper>

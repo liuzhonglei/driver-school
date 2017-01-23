@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.TradeRepository" >
+    <insert id="save">
+        INSERT INTO trade(user_unique_type,user_unique,ip,app_id,mch_id,device_info,goods,out_trade_no,order_status,order_fee,transaction_id,transaction_no,prepay_id,sign_type,sign,nonce_str,time_stamp,data_creator,data_updater)
+        VALUE (#{userUniqueType},#{userUnique},#{ip},#{appId},#{mchId},#{deviceInfo},#{goods},#{outTradeNo},#{orderStatus},#{orderFee},#{transactionId},#{transactionNo},#{prepayId},#{signType},#{sign},#{nonceStr},#{timeStamp},#{dataCreator},#{dataUpdater})
+    </insert>
+
+    <!-- 分页动态查询-->
+    <select id="countBySearch" resultType="Long">
+        SELECT count(id)
+        FROM trade c
+        WHERE 1 = 1
+        <if test = "userUnique != null and userUnique != ''">
+            <bind name="userUniquePattern" value="'%' + _parameter.getUserUnique() + '%'" />
+            AND c.user_unique like #{userUniquePattern}
+        </if>
+        <if test = "outTradeNo != null and outTradeNo != ''">
+            <bind name="outTradeNoPattern" value="'%' + _parameter.getOutTradeNo() + '%'" />
+            AND c.out_trade_no like #{outTradeNoPattern}
+        </if>
+        <if test = "transactionNo != null and transactionNo != ''">
+            <bind name="transactionNoPattern" value="'%' + _parameter.getTransactionNo() + '%'" />
+            AND c.transaction_no like #{transactionNoPattern}
+        </if>
+        <if test = "prepayId != null and prepayId != ''">
+            <bind name="prepayIdPattern" value="'%' + _parameter.getPrepayId() + '%'" />
+            AND c.prepay_id like #{prepayIdPattern}
+        </if>
+        AND c.data_status = 1
+    </select>
+    <select id="findAllBySearch" resultType="com.drivers.entity.Trade">
+        SELECT c.*
+        FROM trade c
+        WHERE 1 = 1
+        <if test = "userUnique != null and userUnique != ''">
+            <bind name="userUniquePattern" value="'%' + _parameter.getUserUnique() + '%'" />
+            AND c.user_unique like #{userUniquePattern}
+        </if>
+        <if test = "outTradeNo != null and outTradeNo != ''">
+            <bind name="outTradeNoPattern" value="'%' + _parameter.getOutTradeNo() + '%'" />
+            AND c.out_trade_no like #{outTradeNoPattern}
+        </if>
+        <if test = "transactionNo != null and transactionNo != ''">
+            <bind name="transactionNoPattern" value="'%' + _parameter.getTransactionNo() + '%'" />
+            AND c.transaction_no like #{transactionNoPattern}
+        </if>
+        <if test = "prepayId != null and prepayId != ''">
+            <bind name="prepayIdPattern" value="'%' + _parameter.getPrepayId() + '%'" />
+            AND c.prepay_id like #{prepayIdPattern}
+        </if>
+        AND c.data_status = 1
+        <if test = "sort != null">
+            ORDER BY ${sort} ${order}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+</mapper>

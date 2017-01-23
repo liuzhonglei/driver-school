@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.SchoolTuitionRepository" >
+
+  <resultMap id="SchoolTuitionResultMap" type="com.drivers.router.web.response.SchoolTuitionResp">
+    <id column="t.id" property="id" jdbcType="BIGINT" />
+    <result column="s.name" property="name" jdbcType="VARCHAR" />
+    <result column="t.tuition" property="tuition" jdbcType="DECIMAL" />
+    <result column="t.tuition_explain" property="tuitionExplain" jdbcType="VARCHAR" />
+    <result column="t.data_updater" property="dataUpdater" jdbcType="VARCHAR" />
+    <result column="t.data_update_datetime" property="dataUpdateDatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="findAllBySearch" resultMap="SchoolTuitionResultMap">
+    SELECT s.name,t.id,t.tuition,t.tuition_explain,t.data_updater,t.data_update_datetime FROM school s
+    LEFT JOIN school_tuition t ON t.school_id = s.id
+    WHERE 1 = 1;
+  </select>
+
+  <update id="update">
+    UPDATE school_tuition
+    <set>
+      <if test="tuition != null">tuition=#{tuition},</if>
+      <if test="tuitionExplain != null">tuition_explain=#{tuitionExplain}</if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

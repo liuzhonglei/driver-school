@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.SuggestionRepository" >
+  <insert id="save">
+    INSERT INTO suggestion(app_type,name,mobile,content,data_creator,data_updater)
+    VALUE (#{appType},#{name},#{mobile},#{content},#{dataCreator},#{dataUpdater})
+  </insert>
+
+
+  <select id="countBySearch" resultType="Long">
+    SELECT COUNT(id)
+    FROM suggestion s
+    WHERE 1 = 1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND s.name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND s.mobile like #{mobilePattern}
+    </if>
+    <if test = "businessStatus != null">
+      AND s.business_status = #{businessStatus}
+    </if>
+    <if test = "startTime != null">
+      AND s.data_update_datetime &gt;= #{startTime}
+    </if>
+    <if test = "endTime != null">
+      AND s.data_update_datetime &lt; #{endTime}
+    </if>
+    AND s.data_status = 1
+  </select>
+
+  <select id="findAllBySearch" resultType="com.drivers.entity.Suggestion">
+    SELECT *
+    FROM suggestion s
+    WHERE 1 = 1
+      <if test = "name != null and name != ''">
+        <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+        AND s.name like #{namePattern}
+      </if>
+      <if test = "mobile != null and mobile != ''">
+        <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+        AND s.mobile like #{mobilePattern}
+      </if>
+      <if test = "businessStatus != null">
+        AND s.business_status = #{businessStatus}
+      </if>
+      <if test = "startTime != null">
+        AND s.data_update_datetime &gt;= #{startTime}
+      </if>
+      <if test = "endTime != null">
+        AND s.data_update_datetime &lt; #{endTime}
+      </if>
+      AND s.data_status = 1
+    <if test = "sort != null">
+      ORDER BY ${sort} ${order}
+    </if>
+    limit #{offset},#{limit}
+
+  </select>
+</mapper>

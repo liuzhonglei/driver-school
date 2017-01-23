@@ -1,0 +1,53 @@
+# ===================================================================
+# Spring Boot configuration for the "prod" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+spring:
+  application:
+    name: drivers
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: false
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath*:com/drivers/**/repository/impl/*.xml
+jhipster:
+  swagger:
+    title: istart API
+    description: istart API documentation
+    version: 0.0.1
+    termsOfServiceUrl:
+    contactName:
+    contactUrl:
+    contactEmail:
+    license:
+    licenseUrl:
+  metrics:
+    jmx.enabled: true
+    spark:
+      enabled: false
+      host: localhost
+      port: 9999
+    graphite:
+      enabled: false
+      host: localhost
+      port: 2003
+      prefix: istart
+    logs: # report metrics in the logs
+      enabled: false
+      reportFrequency: 60 # in seconds

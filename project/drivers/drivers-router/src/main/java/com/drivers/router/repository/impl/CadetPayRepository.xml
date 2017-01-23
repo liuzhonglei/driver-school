@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.CadetPayRepository" >
+
+  <insert id="save">
+    INSERT INTO cadet_pay(cadet_id,pay_status,pay_amount,pay_datetime,data_creator,data_updater)
+    VALUE (#{cadetId},#{payStatus},#{payAmount},#{payDatetime},#{dataCreator},#{dataUpdater})
+  </insert>
+
+  <update id="update" parameterType="java.util.Map">
+    UPDATE cadet_pay
+    set cadet_id = #{cadetId},
+    pay_status = #{payStatus},
+    pay_amount = #{payAmount},
+    pay_datetime = #{payDatetime},
+    data_updater = #{dataUpdater}
+    where id = #{id}
+  </update>
+
+  <select id="statisticsAmount" resultType="com.drivers.router.web.response.StatisticsCadetPayResp">
+    <if test = "type == 1">
+      SELECT SUM(pay_amount) totalAmount,DATE_FORMAT( data_update_datetime, '%Y') times FROM cadet_pay GROUP BY DATE_FORMAT( data_update_datetime, '%Y')
+    </if>
+    <if test = "type == 2">
+      SELECT SUM(pay_amount) totalAmount,DATE_FORMAT( data_update_datetime, '%Y-%m') times FROM cadet_pay GROUP BY DATE_FORMAT( data_update_datetime, '%Y-%m')
+    </if>
+    <if test = "type == 3">
+      SELECT SUM(pay_amount) totalAmount,DATE_FORMAT( data_update_datetime, '%Y-%m-%d') times FROM cadet_pay GROUP BY DATE_FORMAT( data_update_datetime, '%Y-%m-%d')
+    </if>
+  </select>
+  <!-- 分页动态查询-->
+  <select id="countBySearch" resultType="Long">
+    SELECT count(id)
+    FROM cadet
+    WHERE 1 = 1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND mobile like #{mobilePattern}
+    </if>
+    AND data_status = 1
+  </select>
+
+  <select id="findAllBySearch" resultType="com.drivers.router.web.response.CadetPayResp">
+    SELECT c.id,
+            c.username,
+            c.name,
+            c.sex,
+            c.birthday,
+            c.mobile,
+            c.wx_nickname,
+            c.wx_openid,
+            c.idcard_num,
+            cp.id as cadetPayId,
+            cp.cadet_id as cadetId,
+            cp.pay_status,
+            cp.pay_amount,
+            cp.pay_datetime,
+            cp.data_updater,
+            cp.data_update_datetime
+    FROM cadet c
+    LEFT JOIN (SELECT * from cadet_pay where data_status = 1) cp on cp.cadet_id = c.id
+    WHERE 1 = 1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND mobile like #{mobilePattern}
+    </if>
+    AND c.data_status = 1
+    <if test = "sort != null">
+      ORDER BY ${sort} ${order}
+    </if>
+    limit #{offset},#{limit}
+  </select>
+</mapper>

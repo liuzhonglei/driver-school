@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.TransactionRepository" >
+    <insert id="save">
+        INSERT INTO transaction(user_unique_type,user_unique,pay_datetime,mch_id,device_info,sign_type,sign,is_subscribe,trade_type,bank_type,total_fee,settlement_total_fee,fee_type,transaction_no,out_trade_no,data_creator,data_updater)
+        VALUE (#{userUniqueType},#{userUnique},#{payDatetime},#{mchId},#{deviceInfo},#{signType},#{sign},#{isSubscribe},#{tradeType},#{bankType},#{totalFee},#{settlementTotalFee},#{feeType},#{transactionNo},#{outTradeNo},#{dataCreator},#{dataUpdater})
+    </insert>
+</mapper>

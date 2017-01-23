@@ -1,0 +1,25 @@
+{
+  "name": "drivers-weixin",
+  "authors": [
+    "xiejj<xhujinjun@163.com>"
+  ],
+  "description": "眉山市瑞达驾校",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/main/webapp/plugins",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "bootstrap": "^3.3.7",
+    "vue": "^1.0.26",
+    "bootbox.js": "^4.4.0"
+  }
+}

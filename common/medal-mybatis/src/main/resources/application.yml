@@ -1,0 +1,33 @@
+medal:
+  mybatis:
+    base-package: com.istart.demo.repository
+    check-config-location: true
+    config-location: classpath:mybatis-config.xml
+    mapper-locations: classpath*:com/istart/**/repository/impl/*.xml
+    type-aliases-package: com.istart.demo.entity
+spring:
+  datasource:
+#      url: jdbc:mysql://139.224.34.195:3306/drivers?useUnicode=true&characterEncoding=utf8&useSSL=false
+      url: jdbc:mysql://127.0.0.1:3306/drivers?useUnicode=true&characterEncoding=utf8&useSSL=false
+      name:
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      max-active: 100
+      continue-on-error: false
+      initialize: false
+      jmx-enabled: false
+      max-idle: 8
+      max-wait: 60000
+      min-evictable-idle-time-millis:
+      min-idle: 8
+      platform: all
+      schema:
+      separator:
+      sql-script-encoding: UTF-8
+      test-on-borrow:
+      test-on-return: false
+      test-while-idle: false
+      time-between-eviction-runs-millis: 1
+      type:
+      validation-query:

@@ -1,0 +1,124 @@
+server:
+  port: 80
+spring:
+  thymeleaf:
+    cache: false
+  application:
+    name: drivers-weixin
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: false
+  datasource:
+      name:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3307/drivers?useUnicode=true&characterEncoding=utf8&useSSL=false
+      username: root
+      password: 123456
+      # 下面为连接池的补充设置，应用到上面所有数据源中
+      # 初始化大小，最小，最大
+      initial-siz: 5
+      min-idle: 5
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-perConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 合并多个DruidDataSource的监控数据
+      #spring.datasource.useGlobalDataSourceStat=true
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath*:com/drivers/**/repository/impl/*.xml
+
+api:
+  invoke:
+      limit:
+        interval: 60
+        intervalEnabled: true
+# 逗号分割
+      excludes: ["/","/health"]
+  data:
+        keruyunBrandId: 2481
+        aliscanTimeout: 5m
+        sysProviderId: 2088901733657524
+        domain: https://devcheckout.shishike.com/
+        kryAppPayBrandId: 6574
+        payPrefix: CPRD
+        kryReceivingAppId: wx4ab60e260e5aca7c
+        kryReceivingMchId: 1233262402
+        kryReceivingPartnerKey: 2c3c2ef042e046fc83cc2eeb5469e39f
+        kryReceivingTencentCertName: apiclient_cert.p12
+        kryTencentCertName: /alidata/server/krycert/
+        kryTencentCaCertName: tenpay_ca_cert.crt
+        refundPrefix: CRD
+        commonKey: _ck_!d@w#e$n%y_1m2k3i_
+
+  alipay:
+      method:
+        alipayTradeQuery: alipay.trade.query
+        alipayTradeCancel: alipay.trade.cancel
+        alipayTradePrecreate: alipay.trade.precreate
+        alipayTradePay: alipay.trade.pay
+        alipayTradeRefund: alipay.trade.refund
+        alipayTradeClose: alipay.trade.close
+        charset: utf-8
+        signType: RSA
+        version: 1.0
+        domain: https://openapi.alipay.com/gateway.do
+        domainShop: https://mapi.alipay.com/gateway.do
+        wappay: http://wappaygw.alipay.com/service/rest.htm
+        aliPublicKeyString: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB
+        alipayRefundApply: refund/alipay/apply
+        alipayRefundEmail: yangqq@shishike.com,lihm@shishike.com,maojq@shishike.com
+  wxpay:
+      method:
+        orderQuery: https://api.mch.weixin.qq.com/pay/orderquery
+        reverse: https://api.mch.weixin.qq.com/secapi/pay/reverse
+        unifiedOrder: https://api.mch.weixin.qq.com/pay/unifiedorder
+        closeOrder: https://api.mch.weixin.qq.com/pay/closeorder
+        microPay: https://api.mch.weixin.qq.com/pay/micropay
+        refund: https://api.mch.weixin.qq.com/secapi/pay/refund
+        refundOld: https://mch.tenpay.com/refundapi/gateway/refund.xml
+        refundQuery: https://api.mch.weixin.qq.com/pay/refundquery
+        refundQueryOld: https://gw.tenpay.com/gateway/normalrefundquery.xml
+
+        kryNotifyUrl: https://devcheckout.shishike.com/pay/weixin/notify
+        kryNotifyUrlOld: https://devcheckout.shishike.com/pay/weixin/notifyold
+
+  baidu:
+      method:
+        cancel: https://www.baifubao.com/api/0/cancel
+        scanCode: https://www.baifubao.com/o2o/0/code/0/create/0
+        showCode: https://www.baifubao.com/o2o/0/b2c/0/api/0/pay/0
+        webPay: https://www.baifubao.com/api/0/pay/0/wapdirect/0
+        refund: https://www.baifubao.com/api/0/refund
+
+        notifyUrl: pay/baidu/notify
+        pageBackUrl: pay/baidu/pageback
+        refundNotify: refund/baidu/notify
+
+  weifutong:
+      method:
+        gatewayUrl: https://pay.swiftpass.cn/pay/gateway
+        showCode: unified.trade.micropay
+        scanCode: pay.weixin.native
+        webPay: wft.gateway.url
+        refund: wft.service.refund
+        refundQuery: wft.service.refund.query
+
+        wftNotify: pay/wft/notify

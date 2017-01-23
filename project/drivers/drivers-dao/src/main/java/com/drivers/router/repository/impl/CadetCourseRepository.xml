@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.CadetCourseRepository" >
+  <resultMap id="BaseResultMap" type="com.drivers.entity.CadetCourse" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="cadet_id" property="cadetId" jdbcType="BIGINT" />
+    <result column="course" property="course" jdbcType="BIT" />
+    <result column="data_creator" property="dataCreator" jdbcType="VARCHAR" />
+    <result column="data_updater" property="dataUpdater" jdbcType="VARCHAR" />
+    <result column="data_create_datetime" property="dataCreateDatetime" jdbcType="TIMESTAMP" />
+    <result column="data_update_datetime" property="dataUpdateDatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

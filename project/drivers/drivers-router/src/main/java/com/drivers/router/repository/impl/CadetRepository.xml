@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.CadetRepository" >
+  <insert id="save" parameterType="com.drivers.entity.Cadet" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO cadet(coach_id,username,password,name,sex,birthday,mobile,idcard_num,model,wx_nickname,wx_openid,data_creator,data_updater)
+    VALUE (#{coachId},#{username},#{password},#{name},#{sex},#{birthday},#{mobile},#{idcardNum},#{model},#{wxNickname},#{wxOpenid},#{dataCreator},#{dataUpdater})
+  </insert>
+
+  <insert id="batchSave">
+    INSERT INTO cadet(coach_id,username,password,name,sex,birthday,mobile,idcard_num,model,data_creator,data_updater)
+    VALUE
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.coachId},#{item.username},#{item.password},#{item.name},#{item.sex},#{item.birthday},#{item.mobile},#{item.weixinNum},#{item.model},#{item.dataCreator},#{item.dataUpdater})
+    </foreach>
+  </insert>
+
+  <update id="batchInvalid">
+    UPDATE cadet
+    set data_status = 0,data_updater = #{dataUpdater}
+    where id in
+    <foreach item="item" index="index" collection="ids"
+             open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+  <select id="statisticsCadetNum" resultType="com.drivers.router.web.response.StatisticsCadetNumResp">
+    <if test = "type == 1">
+      SELECT COUNT(id) totalNum,DATE_FORMAT( data_update_datetime, '%Y') times FROM cadet GROUP BY DATE_FORMAT( data_update_datetime, '%Y')
+    </if>
+    <if test = "type == 2">
+      SELECT COUNT(id) totalNum,DATE_FORMAT( data_update_datetime, '%Y-%m') times FROM cadet GROUP BY DATE_FORMAT( data_update_datetime, '%Y-%m')
+    </if>
+    <if test = "type == 3">
+      SELECT COUNT(id) totalNum,DATE_FORMAT( data_update_datetime, '%Y-%m-%d') times FROM cadet GROUP BY DATE_FORMAT( data_update_datetime, '%Y-%m-%d')
+    </if>
+  </select>
+  <!-- 分页动态查询-->
+  <select id="countBySearch" resultType="Long">
+    SELECT count(id)
+    FROM cadet c
+    WHERE 1 = 1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND c.name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND c.mobile like #{mobilePattern}
+    </if>
+    <if test = "idcardNum != null and idcardNum != ''">
+      <bind name="idcardNumPattern" value="'%' + _parameter.getIdcardNum() + '%'" />
+      AND c.idcard_num like #{idcardNumPattern}
+    </if>
+    AND c.data_status = 1
+  </select>
+  <select id="findAllBySearch" resultType="com.drivers.router.web.response.CadetResp">
+    SELECT c.*,cp.pay_status,cc.course,d.name driver_name,d.mobile driver_mobile
+    FROM cadet c
+      LEFT JOIN (SELECT * FROM cadet_pay WHERE data_status = 1) cp ON cp.cadet_id = c.id
+      LEFT JOIN (SELECT * FROM cadet_course WHERE data_status = 1) cc ON cc.cadet_id = c.id
+      LEFT JOIN (SELECT * FROM coach WHERE data_status = 1) d ON d.id = c.coach_id
+    WHERE 1 = 1
+    <if test = "name != null and name != ''">
+      <bind name="namePattern" value="'%' + _parameter.getName() + '%'" />
+      AND c.name like #{namePattern}
+    </if>
+    <if test = "mobile != null and mobile != ''">
+      <bind name="mobilePattern" value="'%' + _parameter.getMobile() + '%'" />
+      AND c.mobile like #{mobilePattern}
+    </if>
+    <if test = "idcardNum != null and idcardNum != ''">
+      <bind name="idcardNumPattern" value="'%' + _parameter.getIdcardNum() + '%'" />
+      AND c.idcard_num like #{idcardNumPattern}
+    </if>
+    AND c.data_status = 1
+    <if test = "sort != null">
+      ORDER BY ${sort} ${order}
+    </if>
+    limit #{offset},#{limit}
+  </select>
+</mapper>

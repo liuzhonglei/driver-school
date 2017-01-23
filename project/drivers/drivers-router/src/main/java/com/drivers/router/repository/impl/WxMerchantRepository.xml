@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drivers.router.repository.WxMerchantRepository" >
+
+    <select id="findWxPayParamesById" resultType="com.drivers.entity.WxMerchant">
+        SELECT *
+        FROM wx_merchant
+        WHERE 1 = 1
+    </select>
+    <update id="update">
+        UPDATE wx_merchant
+        SET app_id = #{appId},
+        app_secret = #{appSecret},
+        pay_sign_key = #{paySignKey},
+        partner_id = #{partnerId},
+        partner_key = #{partnerKey},
+        password = #{password},
+        menu_open_type = #{menuOpenType},
+        cert_url = #{certUrl},
+        access_token = #{accessToken},
+        is_open_sub_mch = #{isOpenSubMch}
+        where id = #{id}
+    </update>
+</mapper>

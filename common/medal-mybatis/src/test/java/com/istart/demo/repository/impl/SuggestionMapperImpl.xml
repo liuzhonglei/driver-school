@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.istart.demo.repository.SuggestionRepository">
+    <resultMap id="SuggestionAndFeekbackResult" type="com.istart.demo.entity.Suggestion">
+        <id property="id" column="a.id" />
+        <collection property="suggestionFeekbacks" ofType="com.istart.demo.entity.SuggestionFeekback">
+            <id property="id" column="b.id" />
+        </collection>
+    </resultMap>
+
+    <select id="selectSuggestionAndFeekback" resultMap="SuggestionAndFeekbackResult">
+        select * from suggestion a
+          left join suggestion_feekback b on a.id = b.suggestion_id
+        where a.id = #{id}
+    </select>
+</mapper>
