@@ -3,7 +3,7 @@
 jdk1.8,maven,git,ide,mysql5.6,github帐号等
 ## git克隆代码
 ````
- 仓库: https://git.oschina.net/jinjun/medal.git 
+ 仓库: https://github.com/xhujinjun/driver-school.git
  ```
 ## ide导入maven项目
 
