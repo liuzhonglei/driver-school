@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class FeeClickHandle implements ClickHandle{
         if (null != schoolTuitionResp){
             sb.append("驾驶车型:  " + "桑塔纳(C1)" + "\n");
             sb.append("班        型:  " + "普通班"  + "\n");
-            sb.append("学车费用:  " + schoolTuitionResp.getTuition()  + "\n");
+            sb.append("学车费用:  " + schoolTuitionResp.getTuition().divide(new BigDecimal("100"))  + "元" + "\n");
             sb.append("学车时间:  " + "星期一至星期五学车随到随学"  + "\n");
             sb.append("班型特点:  " + "价格便宜，适合非上班族"  + "");
 

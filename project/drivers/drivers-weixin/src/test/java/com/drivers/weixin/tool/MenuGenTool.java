@@ -79,6 +79,11 @@ public class MenuGenTool {
         learningButton.setSub_button(new Button[] { payStatusButton, learnStatusButton,coachInfoButton });
 
         //菜单: 更多
+        ViewButton documentButton = new ViewButton();
+        documentButton.setName("新预约流程");
+        documentButton.setType(ButtonType.VIEW.getValue());
+        documentButton.setUrl(url + "document.html");
+
         ViewButton contactUsButton = new ViewButton();
         contactUsButton.setName("联系我们");
         contactUsButton.setType(ButtonType.VIEW.getValue());
@@ -91,7 +96,7 @@ public class MenuGenTool {
 
         ComplexButton moreButton = new ComplexButton();
         moreButton.setName("更多");
-        moreButton.setSub_button(new Button[] { contactUsButton, complaintButton });
+        moreButton.setSub_button(new Button[] { documentButton, contactUsButton, complaintButton });
 
         /**
          * 这是公众号xiaoqrobot目前的菜单结构，每个一级菜单都有二级菜单项<br>

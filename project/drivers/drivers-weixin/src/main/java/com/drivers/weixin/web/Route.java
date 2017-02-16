@@ -61,4 +61,9 @@ public class Route {
         log.debug("visit fee page");
         return "/fee";
     }
+    @RequestMapping(value = "/document.html",method = RequestMethod.GET)
+    public String document(){
+        log.debug("visit fee page");
+        return "/document";
+    }
 }
