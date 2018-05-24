@@ -1,17 +1,8 @@
 package com.medal.weixin.sdk.util;
 
-import com.medal.weixin.sdk.pojo.Token;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import java.io.*;
-import java.net.ConnectException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 通用工具类
