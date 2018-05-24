@@ -1,0 +1,4 @@
+CREATE TABLE `wx_merchant` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='微信商户';
