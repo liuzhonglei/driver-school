@@ -9,6 +9,7 @@
         <module>drivers-weixin</module>
         <module>drivers-router</module>
         <module>drivers-entity</module>
+        <module>wifi-recommend</module>
         <!--<module>drivers-cashier</module>-->
     </modules>
     <parent>
